@@ -22,7 +22,7 @@ public class NasaPost {
             @JsonProperty("media_type") String media_type,
             @JsonProperty("service_version") String service_version,
             @JsonProperty("title") String title,
-            @JsonProperty("url")  String url) {
+            @JsonProperty("url") String url) {
         this.copyright = copyright;
         this.date = date;
         this.explanation = explanation;

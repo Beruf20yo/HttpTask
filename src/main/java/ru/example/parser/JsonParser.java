@@ -18,9 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 
-public class JsonParser{
+public class JsonParser {
     private InputStream content;
 
     private void makeConnection(String remoteServiceUrl) {
@@ -42,13 +41,15 @@ public class JsonParser{
             throw new RuntimeException(e);
         }
     }
+
     /*
      Выводим в консоль все утверждения о котах с голосами > 0
      */
-    public void parseVotes(String catsRemoteServiceUrl)  throws IOException{
+    public void parseVotes(String catsRemoteServiceUrl) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         makeConnection(catsRemoteServiceUrl);
-        List<VotesPost> votesPosts = mapper.readValue(content, new TypeReference<List<VotesPost>>() {});
+        List<VotesPost> votesPosts = mapper.readValue(content, new TypeReference<List<VotesPost>>() {
+        });
         votesPosts.stream()
                 .filter(vote -> vote.getUpvotes() > 0)
                 .map(VotesPost::getText)
@@ -58,12 +59,13 @@ public class JsonParser{
     public void parseNasa(String nasaRemoteServiceUrl) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         makeConnection(nasaRemoteServiceUrl);
-        NasaPost nasaPost = mapper.readValue(content, new TypeReference<NasaPost>() {});
+        NasaPost nasaPost = mapper.readValue(content, new TypeReference<NasaPost>() {
+        });
         String url = nasaPost.getUrl();
-        String fileName = url.substring(url.lastIndexOf("/" ) + 1);
+        String fileName = url.substring(url.lastIndexOf("/") + 1);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
-            byte dataBuffer[] = new byte[1024];
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
@@ -72,8 +74,6 @@ public class JsonParser{
             System.out.println("Ошибка записи в файл");
         }
     }
-
-
 
 
 }
